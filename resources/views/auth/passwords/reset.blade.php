@@ -8,7 +8,7 @@
             <div class="animate form login_form">
                 <section class="login_content">
                     {{ Form::open(['route' => 'password.request']) }}
-                    <h1>{{ __('views.auth.passwords.reset.header') }}</h1>
+                    <h3>{{ __('views.auth.passwords.reset.header') }}</h3>
 
                     <input type="hidden" name="token" value="{{ $token }}">
 

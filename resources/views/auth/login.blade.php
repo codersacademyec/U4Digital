@@ -43,11 +43,13 @@
                                 {{ __('views.auth.login.action_1') }}
                             </a>
                         </div>
-
-                        <div class="clearfix"></div>
-
+                        
+                        
+                        <!-- Autenticación con redes sociales
+                        <div class="clearfix"></div> 
                         <div class="separator">
-                            <span>{{ __('views.auth.login.message_0') }}</span>
+                            
+                                <span>{{ __('views.auth.login.message_0') }}</span>
                             <div>
                                 <a href="{{ route('social.redirect', ['google']) }}" class="btn btn-success btn-google-plus">
                                     <i class="fa fa-google-plus"></i>
@@ -61,8 +63,10 @@
                                     <i class="fa fa-twitter"></i>
                                     Twitter
                                 </a>
-                            </div>
+                            </div>                   
+
                         </div>
+                        -->
 
                         @if(config('auth.users.registration'))
                             <div class="separator">

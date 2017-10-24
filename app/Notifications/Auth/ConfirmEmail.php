@@ -48,9 +48,9 @@ class ConfirmEmail extends Notification
         $mailMessage->action(__('notification.auth.confirm_email.mail.action'), route('confirm', [$notifiable->confirmation_code]));
         $mailMessage->line(__('notification.auth.confirm_email.mail.line.1'));
         $mailMessage->line(__('notification.auth.confirm_email.mail.line.2', ['email' => config('mail.from.address')]));
-
         $mailMessage->line(__('notification.auth.confirm_email.mail.line.3', ['app' => config('app.name')]));
-
+        $mailMessage->salutation(__('notification.regards', ['app' => config('app.name')]));
+        
         return $mailMessage;
     }
 

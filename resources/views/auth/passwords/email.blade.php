@@ -8,7 +8,7 @@
             <div class="animate form login_form">
                 <section class="login_content">
                     {{ Form::open(['route' => 'password.email']) }}
-                        <h1>{{ __('views.auth.passwords.email.header') }}</h1>
+                        <h3>{{ __('views.auth.passwords.email.header') }}</h3>
 
                         <div>
                             <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}"

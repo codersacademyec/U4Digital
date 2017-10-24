@@ -15,18 +15,23 @@
                                    value="{{ old('name') }}" required autofocus/>
                         </div>
                         <div>
-                            <input type="email" name="email" class="form-control"
+                            <input type="text" name="last_name" class="form-control"
                                    placeholder="{{ __('views.auth.register.input_1') }}"
+                                   value="{{ old('last_name') }}" required autofocus/>
+                        </div>
+                        <div>
+                            <input type="email" name="email" class="form-control"
+                                   placeholder="{{ __('views.auth.register.input_2') }}"
                                    required/>
                         </div>
                         <div>
                             <input type="password" name="password" class="form-control"
-                                   placeholder="{{ __('views.auth.register.input_2') }}"
+                                   placeholder="{{ __('views.auth.register.input_3') }}"
                                    required=""/>
                         </div>
                         <div>
                             <input type="password" name="password_confirmation" class="form-control"
-                                   placeholder="{{ __('views.auth.register.input_3') }}"
+                                   placeholder="{{ __('views.auth.register.input_4') }}"
                                    required/>
                         </div>
 

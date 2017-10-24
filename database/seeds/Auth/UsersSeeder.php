@@ -24,6 +24,7 @@ class UsersSeeder extends Seeder
         $users = [
             [
                 'name' => 'Admin',
+                'last_name' => 'Smith',
                 'email' => 'admin.laravel@labs64.com',
                 'password' => bcrypt('admin'),
                 'active' => true,
@@ -34,6 +35,7 @@ class UsersSeeder extends Seeder
             ],
             [
                 'name' => 'Demo',
+                'last_name' => 'SmithDemo',
                 'email' => 'demo.laravel@labs64.com',
                 'password' => bcrypt('demo'),
                 'active' => true,
