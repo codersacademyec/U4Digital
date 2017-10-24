@@ -82,7 +82,6 @@
         <div class="flex-center position-ref full-height">
 
                 <div class="top-right links">
-                    <a href="{{ route('protection.membership') }}">{{ __('views.welcome.member_area') }}</a>
 
                     @if (Route::has('login'))
                         @if (!Auth::check())
@@ -94,6 +93,7 @@
                             @if(auth()->user()->hasRole('administrator'))
                                 <a href="{{ url('/admin') }}">{{ __('views.welcome.admin') }}</a>
                             @endif
+                            <a href="{{ url('/shopping') }}">Shopping</a>
                             <a href="{{ url('/logout') }}">{{ __('views.welcome.logout') }}</a>
                         @endif
                     @endif

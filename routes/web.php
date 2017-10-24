@@ -69,6 +69,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 Route::get('/', 'HomeController@index');
 
 /**
+* Client routes
+*/
+
+Route::get('shopping', 'ShoppingController@index')->name('store.shopping');
+
+/**
  * Membership
  */
 Route::group(['as' => 'protection.'], function () {
