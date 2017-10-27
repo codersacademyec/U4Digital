@@ -21,7 +21,7 @@ class CreateShoppingsTable extends Migration
         $table -> unsignedInteger('item_id');
         $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
 
-        $table ->string('session_user');
+        $table ->string('session_user_id');
 
         $table->timestamps();
         });
