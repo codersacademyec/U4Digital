@@ -31,6 +31,8 @@
                                             <source src="{{$product->video_route}}" type="video/mp4">
                                             Your browser does not support HTML5 video.
                                         </video>
+                                        <br>
+                                        <br>
                                         <p>{{$product->description}}</p>
                                         <p> <b>Precio:</b>{{$product->price}} $</p>
                                         <p>Cantidad: <input type="number" id="number" name="number" required="required" data-validate-minmax="1,100"></p> 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Shopping;
-use App\Product;
+use App\Models\Shopping;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ShoppingController extends Controller
