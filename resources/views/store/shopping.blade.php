@@ -50,10 +50,43 @@
         <div class="col-md-4">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Carrito de compra</h2>
+                    <h2>Carrito</h2>
                     <div class="clearfix"></div>
                     <div class="x_content">
-                        
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                  <th>Cantidad</th>
+                                  <th>Producto</th>
+                                  <th>Precio</th>
+                                </tr>
+                              </thead>
+                              <tfoot>
+                                  <tr>
+                                        <td></td>
+                                        <td>Total</td>
+                                  </tr>
+                              </tfoot>
+                              <tbody>
+                                
+                              </tbody>
+                            </table>
+
+                        <div style="position:relative;margin: 10px 10px;">
+                            <a href="https:&#x2F;&#x2F;payment.payphonetodoesposible.com&#x2F;/Pay/500/6190477d-a58c-4a97-86ce-73cfe61d5962/es/" 
+                            style="position: relative;
+                            padding: 8px 30px;
+                            border: 0;
+                            margin: 10px 1px;
+                            cursor: pointer;
+                            border-radius: 2px;
+                            text-transform: uppercase;
+                            text-decoration: none;
+                            color: rgba(255,255,255,.84) !important;
+                            transition: background-color .2s ease,box-shadow .28s cubic-bezier(.4,0,.2,1);
+                            outline: none!important;
+                            background-color:#ff9100;" onmouseover="this.style.backgroundColor='#ff8400'" onmouseout="this.style.backgroundColor='#ff9100'">Pagar con PayPhone</a>
+                        </div>     
                     </div>
                 </div>
             </div>
