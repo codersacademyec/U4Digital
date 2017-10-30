@@ -34,19 +34,19 @@
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <i class="fa fa-user" aria-hidden="true"></i>
                             Perfil
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <i class="fa fa-money" aria-hidden="true"></i>
                             Facturación
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <i class="fa fa-image" aria-hidden="true"></i>
                             Galería
                         </a>
                     </li>

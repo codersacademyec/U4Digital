@@ -43,7 +43,19 @@ class UsersSeeder extends Seeder
                 'confirmed' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
+            ],
+            [
+                'name' => 'Aux',
+                'last_name' => 'Test',
+                'email' => 'aux.text@labs64.com',
+                'password' => bcrypt('123'),
+                'active' => true,
+                'confirmation_code' => \Ramsey\Uuid\Uuid::uuid4(),
+                'confirmed' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]
+
         ];
 
         DB::table('users')->insert($users);

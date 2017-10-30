@@ -9,36 +9,40 @@
                     <h2>Productos</h2>
                     <div class="clearfix"></div>
                     <div class="x_content">
-                        <br>
+                        
+                            <br>
 
-                        <div class="col-xs-3">
-                            <ul class="nav nav-tabs tabs-left">
-                                <li class="active"><a href="#home" data-toggle="tab">Pack 5 post</a>
-                                </li>
-                                <li><a href="#profile" data-toggle="tab">Pack 10 post</a>
-                                </li>
-                                <li><a href="#messages" data-toggle="tab">Vídeo de 15 seg</a>
-                                </li>
-                                <li><a href="#settings" data-toggle="tab">Vídeo de 30 seg</a>
-                                </li>
-                          </ul>
-                        </div>
-
-                        <div class="col-xs-9">
-                            <!-- Tab panes -->
-                             <div class="tab-content">
-                                <div class="tab-pane active" id="home">
-                                    <p class="lead">Pack de 5 Post</p>
-                                        <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
-                                </div>
-                                <div class="tab-pane" id="profile">Profile Tab.</div>
-                                <div class="tab-pane" id="messages">Messages Tab.</div>
-                                <div class="tab-pane" id="settings">Settings Tab.</div>
+                            <div class="col-xs-3">
+                                <ul class="nav nav-tabs tabs-left">
+                                    @foreach($products as $key => $product)
+                                    <li  class="{{ $key == 0 ? 'active' : '' }}"><a href="#{{$key}}" data-toggle="tab">{{$product->name}}</a>
+                                    </li>
+                                    @endforeach
+                              </ul>
                             </div>
-                    </div>
 
-                    <div class="clearfix"></div>
+                            <div class="col-xs-9">
+                                <!-- Tab panes -->
+                                 <div class="tab-content">
+                                    @foreach($products as $key => $product)
+                                    <div class="tab-pane {{ $key == 0 ? 'active' : '' }}" id="{{$key}}">
+                                        <p class="lead">{{$product->name}}</p>
+                                        <video width="400" controls>
+                                            <source src="{{$product->video_route}}" type="video/mp4">
+                                            Your browser does not support HTML5 video.
+                                        </video>
+                                        <p>{{$product->description}}</p>
+                                        <p> <b>Precio:</b>{{$product->price}} $</p>
+                                        <p>Cantidad: <input type="number" id="number" name="number" required="required" data-validate-minmax="1,100"></p> 
+                                        
+                                        <button class="btn btn-success">Añadir</button>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
 
+                            <div class="clearfix"></div>
+                        
                     </div>
                 </div>
             </div>

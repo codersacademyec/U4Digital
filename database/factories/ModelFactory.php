@@ -22,3 +22,23 @@ $factory->define(\App\Models\Auth\User\User::class, function (Faker\Generator $f
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(\App\Models\Item::class, function(Faker\Generator $faker){
+	
+	return [
+		'name' => $faker->word,
+		'description' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true) 
+	];
+});
+
+$factory->define(\App\Models\Product::class, function(Faker\Generator $faker){
+	
+	return [
+		'description' => 'Pack de 5 post',
+        'price' => '100$',
+        'video_route' => 'resources/mov1.mp4',
+        'item_id' => "2",  
+        'created_at' => Carbon::now(),
+        'updated_at' => Carbon::now(),
+	];
+});
