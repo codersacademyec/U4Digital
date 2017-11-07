@@ -49,6 +49,12 @@
                             {{ __('views.backend.section.navigation.menu_1_1') }}
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.companies') }}">
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                            {{ __('views.admin.companies.index.title') }}
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="menu_section">

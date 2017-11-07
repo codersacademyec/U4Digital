@@ -167,5 +167,15 @@
   "views.membership.table_header_5": "Expires",
   "views.membership.table_header_6": "Actions",
   "views.membership.valid": "valid",
-  "views.membership.not_valid": "not valid"
+  "views.membership.not_valid": "not valid",
+  "**************************** Admin companies **********************": "Admin user i18n",
+  "views.admin.companies.index.title": "Companies",
+  "views.admin.companies.add.title": "Add",
+  "views.admin.companies.add.tooltip": "Add a New Company",
+  "views.admin.companies.add.ruc": "RUC",
+  "views.admin.companies.add.name": "Name",
+  "views.admin.companies.add.phone": "Phone",
+  "views.admin.companies.add.email": "Email",
+  "views.admin.companies.add.business_name": "Business Name",
+  "views.admin.companies.add.address": "address"
 }
