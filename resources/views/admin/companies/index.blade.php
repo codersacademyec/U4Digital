@@ -5,9 +5,6 @@
 
 @section('content')
     <div class="row">
-        <div class="pull-right">
-            {{ $companies->links() }}
-        </div>
         <div class="col col-md-12">
             <div class="pull-right">
                 <a class="btn btn-xs btn-primary" href="{{ route('admin.companies.create') }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.companies.add.title') }}">
@@ -52,6 +49,9 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="pull-right">
+                {{ $companies->links() }}
+            </div>
         </div>
     </div>
 @endsection
