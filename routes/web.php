@@ -68,6 +68,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('companies', 'CompanyController@index')->name('companies');
     Route::get('companies/add', 'CompanyController@create')->name('companies.create');
     Route::post('companies', 'CompanyController@store')->name('companies.store');
+    Route::get('companies/{company}', 'CompanyController@show')->name('companies.show');
+    Route::get('companies/{company}/edit', 'CompanyController@edit')->name('companies.edit');
+    Route::put('companies/{company}', 'CompanyController@update')->name('companies.update');
 });
 
 
