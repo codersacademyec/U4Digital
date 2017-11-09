@@ -104,6 +104,15 @@ mix.styles([
 ], 'public/assets/admin/css/users/edit.css').version();
 
 mix.scripts([
+    'resources/assets/admin/js/companies/delete.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js',
+], 'public/assets/admin/js/companies/delete.js').version();
+
+/*mix.styles([
+    'node_modules/bootstrap/dist/css/bootstrap.css',
+], 'public/assets/admin/css/companies/delete.css').version();*/
+
+mix.scripts([
     'node_modules/gentelella/vendors/Flot/jquery.flot.js',
     'node_modules/gentelella/vendors/Flot/jquery.flot.time.js',
     'node_modules/gentelella/vendors/Flot/jquery.flot.pie.js',

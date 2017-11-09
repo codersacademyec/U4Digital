@@ -71,6 +71,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('companies/{company}', 'CompanyController@show')->name('companies.show');
     Route::get('companies/{company}/edit', 'CompanyController@edit')->name('companies.edit');
     Route::put('companies/{company}', 'CompanyController@update')->name('companies.update');
+    Route::delete('companies/delete/{id}', 'CompanyController@destroy')->name('companies.delete');
 });
 
 

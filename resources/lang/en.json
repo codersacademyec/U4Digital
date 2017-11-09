@@ -195,5 +195,9 @@
   "views.admin.companies.show.table_header_4": "Phone",
   "views.admin.companies.show.table_header_5": "Created",
   "views.admin.companies.show.table_header_6": "Last updated",
-  "views.admin.companies.edit.title": "Edit \":name\""
+  "views.admin.companies.edit.title": "Edit \":name\"",
+  "views.admin.companies.delete.modal.title": "Confirm Delete",
+  "views.admin.companies.delete.modal.message": "Are you sure you want to delete",
+  "views.admin.companies.delete.modal.cancel": "Cancel",
+  "views.admin.companies.delete.modal.accept": "Delete"
 }
