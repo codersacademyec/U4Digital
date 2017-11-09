@@ -135,12 +135,8 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
         $company = Company::find($id);
-        //return view('admin.companies.show', ['company' => $company]);
         $company->delete();
         return redirect()->intended(route('admin.companies'));
-
-        //return $id;
     }
 }
