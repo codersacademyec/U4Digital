@@ -158,6 +158,7 @@
   "views.admin.users.show.table_header_5": "Confirmed",
   "views.admin.users.show.table_header_6": "Created at",
   "views.admin.users.show.table_header_7": "Last updated",
+  "views.admin.users.show.table_header_8": "Company",
   "views.admin.users.show.active": "Active",
   "views.admin.users.show.inactive": "Inactive",
   "views.admin.users.show.confirmed": "Confirmed",

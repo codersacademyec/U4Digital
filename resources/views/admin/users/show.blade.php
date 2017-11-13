@@ -61,6 +61,15 @@
                 <th>{{ __('views.admin.users.show.table_header_7') }}</th>
                 <td>{{ $user->updated_at }} ({{ $user->updated_at->diffForHumans() }})</td>
             </tr>
+
+            @if(isset($company))
+                <tr>
+                    <th>{{ __('views.admin.users.show.table_header_8') }}</th>
+                    <td>
+                        {{ $company->name }}
+                    </td>
+                </tr>
+            @endif
             </tbody>
         </table>
     </div>

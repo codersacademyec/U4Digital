@@ -80,6 +80,7 @@ class UserController extends Controller
             $companyUsers = new CompanyUser();
             $companyUsers->company_id = $companyId;
             $companyUsers->user_id = $user->id;
+            $companyUsers->active = true;
             $companyUsers->save();
         }
 
@@ -103,6 +104,11 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $companyUser = CompanyUser::where('user_id','=',$user->id)->first();
+        //return $companyUser->company;
+        if($companyUser != null) {
+            return view('admin.users.show', ['user' => $user, 'company' => $companyUser->company]);
+        }
         return view('admin.users.show', ['user' => $user]);
     }
 
