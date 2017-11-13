@@ -104,6 +104,10 @@ mix.styles([
 ], 'public/assets/admin/css/users/edit.css').version();
 
 mix.scripts([
+    'resources/assets/admin/js/users/delete.js',
+], 'public/assets/admin/js/users/delete.js').version();
+
+mix.scripts([
     'node_modules/gentelella/vendors/switchery/dist/switchery.min.js',
     'node_modules/select2/dist/js/select2.full.js',
     'resources/assets/admin/js/users/create.js',

@@ -26,6 +26,24 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last_name" >
+                        {{ __('views.admin.users.create.last_name') }}
+                        <span class="required">*</span>
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="last_name" type="text" class="form-control col-md-7 col-xs-12 @if($errors->has('last_name')) parsley-error @endif"
+                               name="last_name" value="{{ $user->last_name }}" required>
+                        @if($errors->has('last_name'))
+                            <ul class="parsley-errors-list filled">
+                                @foreach($errors->get('last_name') as $error)
+                                    <li class="parsley-required">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">
                         {{ __('views.admin.users.edit.email') }}
                         <span class="required">*</span>

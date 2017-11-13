@@ -104,8 +104,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $companyUser = CompanyUser::where('user_id','=',$user->id)->first();
-        //return $companyUser->company;
+        $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->first();
         if($companyUser != null) {
             return view('admin.users.show', ['user' => $user, 'company' => $companyUser->company]);
         }
@@ -120,6 +119,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->first();
+        if($companyUser != null) {
+            return view('admin.users.edit', ['user' => $user, 'roles' => Role::get(), 'company' => $companyUser->company]);
+        }
         return view('admin.users.edit', ['user' => $user, 'roles' => Role::get()]);
     }
 
@@ -181,6 +184,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::find($id);
+
+        if($user != null) {
+            $companiesRelations = CompanyUser::where('user_id','=',$id)->first();
+            if($companiesRelations != null) {
+                $companiesRelations->delete();
+            }
+            $user->delete();
+        }
+
+        return redirect()->intended(route('admin.users'));
+
     }
 }

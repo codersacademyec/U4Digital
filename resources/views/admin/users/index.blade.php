@@ -53,6 +53,9 @@
                         <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.edit') }}">
                             <i class="fa fa-pencil"></i>
                         </a>
+                        <a class="btn btn-xs btn-danger" data-user_id="{{ $user->id }}" name="btnUserDelete"  data-user_name="{{ $user->name }}" type="button" data-placement="top" data-title="{{ __('views.admin.users.index.edit') }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
                         {{--@if(!$user->hasRole('administrator'))--}}
                             {{--<button class="btn btn-xs btn-danger user_destroy"--}}
                                     {{--data-url="{{ route('admin.users.destroy', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.delete') }}">--}}
@@ -68,4 +71,34 @@
             {{ $users->links() }}
         </div>
     </div>
+
+    <div class="modal fade" id="confirmUserDelete" tabindex="-1" role="dialog" aria-labelledby="favoritesModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="favoritesModalLabel">{{ __('views.admin.companies.delete.modal.title') }}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{{ __('views.admin.companies.delete.modal.message') }} <span id="pName"></span>?</p>
+                </div>
+                <div class="modal-footer">
+                    {{ Form::open(['method' => 'delete', 'id'=>'formConfirmDelete','class'=>'form-horizontal form-label-left']) }}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ __('views.admin.companies.delete.modal.cancel') }}</button>
+                    <span class="pull-right">
+                        <button type="submit" class="btn btn-danger" id="confirmDeleteBtnUser" >
+                        {{ __('views.admin.companies.delete.modal.accept') }}
+                      </button>
+                    </span>
+                    {{ Form::close() }}
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    @parent
+    {{ Html::script(mix('assets/admin/js/users/delete.js')) }}
 @endsection
