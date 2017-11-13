@@ -104,6 +104,17 @@ mix.styles([
 ], 'public/assets/admin/css/users/edit.css').version();
 
 mix.scripts([
+    'node_modules/gentelella/vendors/switchery/dist/switchery.min.js',
+    'node_modules/select2/dist/js/select2.full.js',
+    'resources/assets/admin/js/users/create.js',
+], 'public/assets/admin/js/users/create.js').version();
+
+mix.styles([
+    'node_modules/gentelella/vendors/switchery/dist/switchery.min.css',
+    'node_modules/select2/dist/css/select2.css',
+], 'public/assets/admin/css/users/create.css').version();
+
+mix.scripts([
     'resources/assets/admin/js/companies/delete.js',
     'node_modules/bootstrap/dist/js/bootstrap.js',
 ], 'public/assets/admin/js/companies/delete.js').version();

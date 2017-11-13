@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Auth\Role\Role;
 use App\Models\Auth\User\User;
+use App\Models\CompanyUser;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Validator;
 
@@ -27,7 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.users.create', ['roles' => Role::get(), 'companies' => Company::orderby('name','asc')->get()]);
     }
 
     /**
@@ -38,7 +41,58 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'email' => 'required|unique:users|email|max:255',
+            'password' => 'required|confirmed|max:255',
+            'password_confirmation' => 'required|max:255',
+        ]);
+
+        $validator->sometimes('password', 'min:6|confirmed', function ($input) {
+            return $input->password;
+        });
+
+        if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
+
+        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
+            $validator = Validator::make($request->all(), [
+                'companies.*' => [
+                    'required',
+                    Rule::notIn(['0']),
+                ],
+                'roles' => ['required']
+            ]);
+            if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->last_name = $request->get('last_name');
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->active = $request->get('active', 0);
+        $user->confirmed = $request->get('confirmed', 0);
+        $user->save();
+
+        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
+            $companyId = $request->get('companies')[0];
+
+            $companyUsers = new CompanyUser();
+            $companyUsers->company_id = $companyId;
+            $companyUsers->user_id = $user->id;
+            $companyUsers->save();
+        }
+
+        //roles
+        if ($request->has('roles')) {
+            $user->roles()->detach();
+
+            if ($request->get('roles')) {
+                $user->roles()->attach($request->get('roles'));
+            }
+        }
+
+        return redirect()->intended(route('admin.users'));
     }
 
     /**

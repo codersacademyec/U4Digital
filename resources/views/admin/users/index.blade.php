@@ -4,6 +4,13 @@
 
 @section('content')
     <div class="row">
+        <div class="col col-md-12">
+            <div class="pull-right">
+                <a class="btn btn-xs btn-primary" href="{{ route('admin.users.create') }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.create') }}">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+        </div>
         <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
                width="100%">
             <thead>
