@@ -190,7 +190,9 @@ class UserController extends Controller
         }
         else {
             $companyUsers = CompanyUser::where('user_id','=',$user->id)->first();
-            $companyUsers->delete();
+            if($companyUsers != null) {
+                $companyUsers->delete();
+            }
         }
 
         //roles
