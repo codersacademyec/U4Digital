@@ -121,9 +121,9 @@ class UserController extends Controller
     {
         $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->first();
         if($companyUser != null) {
-            return view('admin.users.edit', ['user' => $user, 'roles' => Role::get(), 'company' => $companyUser->company]);
+            return view('admin.users.edit', ['user' => $user, 'companyUser' => $companyUser , 'roles' => Role::get(), 'companies' => Company::orderby('name','asc')->get()]);
         }
-        return view('admin.users.edit', ['user' => $user, 'roles' => Role::get()]);
+        return view('admin.users.edit', ['user' => $user, 'roles' => Role::get(), 'companies' => Company::orderby('name','asc')->get()]);
     }
 
     /**
@@ -152,6 +152,17 @@ class UserController extends Controller
 
         if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
 
+        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
+            $validator = Validator::make($request->all(), [
+                'companies.*' => [
+                    'required',
+                    Rule::notIn(['0']),
+                ],
+                'roles' => ['required']
+            ]);
+            if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
+        }
+
         $user->name = $request->get('name');
         $user->email = $request->get('email');
 
@@ -163,6 +174,24 @@ class UserController extends Controller
         $user->confirmed = $request->get('confirmed', 0);
 
         $user->save();
+
+        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
+            $companyId = $request->get('companies')[0];
+
+            $companyUsers = CompanyUser::where('company_id','=',$companyId)->where('user_id','=',$user->id)->first();
+
+            if($companyUsers == null) {
+                $companyUsers = new CompanyUser();
+                $companyUsers->company_id = $companyId;
+            }
+            $companyUsers->user_id = $user->id;
+            $companyUsers->active = true;
+            $companyUsers->save();
+        }
+        else {
+            $companyUsers = CompanyUser::where('user_id','=',$user->id)->first();
+            $companyUsers->delete();
+        }
 
         //roles
         if ($request->has('roles')) {

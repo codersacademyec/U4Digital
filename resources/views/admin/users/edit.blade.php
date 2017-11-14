@@ -140,6 +140,40 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="belong_company">
+                        {{ __('views.admin.users.create.belong_company') }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="">
+                            <label>
+                                <input type="checkbox" name="belong_company" id="belong_company" class="belong-switch" {{ !$errors->has('companies.0')? '':'checked' }} {{ isset($companyUser) ? 'checked': '' }} />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group {{!$errors->has('companies.0')? isset($companyUser)? '':'hidden' :''}}" id="divCompanies">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="companies">
+                        {{ __('views.admin.users.create.companies') }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select class="form-control" id="companies" name="companies[]" autocomplete="off">
+                            <option value="0">{{ __('views.admin.users.create.choose_company') }}</option>
+                            @foreach($companies as $company)
+                                <option value="{{ $company->id }}" {{ isset($companyUser) && $companyUser->company_id == $company->id? 'selected':'' }}>{{ $company->name }}</option>
+                            @endforeach
+                        </select>
+                        @if($errors->has('companies.0'))
+                            <ul class="parsley-errors-list filled">
+                                @foreach($errors->get('companies.0') as $error)
+                                    <li class="parsley-required">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="roles">
                         {{ __('views.admin.users.edit.roles') }}
                     </label>

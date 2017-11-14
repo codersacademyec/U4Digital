@@ -96,11 +96,13 @@ mix.copy([
 
 mix.scripts([
     'node_modules/select2/dist/js/select2.full.js',
+    'node_modules/gentelella/vendors/switchery/dist/switchery.min.js',
     'resources/assets/admin/js/users/edit.js',
 ], 'public/assets/admin/js/users/edit.js').version();
 
 mix.styles([
     'node_modules/select2/dist/css/select2.css',
+    'node_modules/gentelella/vendors/switchery/dist/switchery.min.css',
 ], 'public/assets/admin/css/users/edit.css').version();
 
 mix.scripts([
