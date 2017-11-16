@@ -62,11 +62,13 @@
                 <td>{{ $user->updated_at }} ({{ $user->updated_at->diffForHumans() }})</td>
             </tr>
 
-            @if(isset($company))
+            @if(isset($companiesUser))
                 <tr>
                     <th>{{ __('views.admin.users.show.table_header_8') }}</th>
                     <td>
-                        {{ $company->name }}
+                        @foreach($companiesUser as $companyUser)
+                            <span> {{ $companyUser->company->name }} </span>
+                        @endforeach
                     </td>
                 </tr>
             @endif

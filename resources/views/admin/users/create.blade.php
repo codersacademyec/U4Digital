@@ -98,6 +98,29 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="roles">
+                        {{ __('views.admin.users.create.roles') }}
+                    </label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <select id="roles" name="roles[]" class="select2" style="width: 100%" placeholder="Choose Role" autocomplete="off">
+                            <option value="0">Choose Role</option>
+                            @foreach($roles as $role)
+                                @if(auth()->user()->hasRole('system_admin') && $role->name != 'company_user')
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @if($errors->has('roles.0'))
+                            <ul class="parsley-errors-list filled">
+                                @foreach($errors->get('roles.0') as $error)
+                                    <li class="parsley-required">{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+
+                <!--<div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="belong_company">
                         {{ __('views.admin.users.create.belong_company') }}
                     </label>
@@ -108,15 +131,14 @@
                             </label>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
                 <div class="form-group {{!$errors->has('companies.0')? 'hidden':''}}" id="divCompanies">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="companies">
                         {{ __('views.admin.users.create.companies') }}
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select class="form-control" id="companies" name="companies[]" autocomplete="off">
-                            <option value="0">{{ __('views.admin.users.create.choose_company') }}</option>
+                        <select class="form-control" id="companies" name="companies[]" >
                             @foreach($companies as $company)
                                 <option value="{{ $company->id }}">{{ $company->name }}</option>
                             @endforeach
@@ -131,25 +153,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="roles">
-                        {{ __('views.admin.users.create.roles') }}
-                    </label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <select id="roles" name="roles[]" class="select2" multiple="multiple" style="width: 100%" autocomplete="off">
-                            @foreach($roles as $role)
-                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('roles'))
-                            <ul class="parsley-errors-list filled">
-                                @foreach($errors->get('roles') as $error)
-                                    <li class="parsley-required">{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </div>
-                </div>
+
 
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

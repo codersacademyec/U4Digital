@@ -46,6 +46,10 @@ class UserController extends Controller
             'email' => 'required|unique:users|email|max:255',
             'password' => 'required|confirmed|max:255',
             'password_confirmation' => 'required|max:255',
+            'roles.*' => [
+                'required',
+                Rule::notIn(['0']),
+            ]
         ]);
 
         $validator->sometimes('password', 'min:6|confirmed', function ($input) {
@@ -54,17 +58,6 @@ class UserController extends Controller
 
         if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
 
-        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
-            $validator = Validator::make($request->all(), [
-                'companies.*' => [
-                    'required',
-                    Rule::notIn(['0']),
-                ],
-                'roles' => ['required']
-            ]);
-            if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
-        }
-
         $user = new User();
         $user->name = $request->get('name');
         $user->last_name = $request->get('last_name');
@@ -72,28 +65,93 @@ class UserController extends Controller
         $user->password = bcrypt($request->get('password'));
         $user->active = $request->get('active', 0);
         $user->confirmed = $request->get('confirmed', 0);
-        $user->save();
 
-        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
-            $companyId = $request->get('companies')[0];
 
+        $rol = Role::find($request->get('roles')[0]);
+
+        $validatorCompanies = Validator::make($request->all(), [
+            'companies.*' => [
+                'required',
+                Rule::notIn(['0']),
+            ]
+        ]);
+
+        switch ($rol->name) {
+            case 'system_admin' :
+                $user->save();
+                break;
+            case 'community_manager' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                $user->save();
+                $this->setCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            case 'company_admin' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                $user->save();
+                $this->setCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            case 'company_user' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                $user->save();
+                $this->setCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            default:
+                break;
+        }
+
+
+        //$user->save();
+        $user->roles()->detach();
+        $user->roles()->attach($request->get('roles'));
+
+        return redirect()->intended(route('admin.users'));
+    }
+
+    private function setCompaniesToUser($companies, $userId) {
+
+        foreach ($companies as $companyId) {
             $companyUsers = new CompanyUser();
             $companyUsers->company_id = $companyId;
-            $companyUsers->user_id = $user->id;
+            $companyUsers->user_id = $userId;
             $companyUsers->active = true;
             $companyUsers->save();
         }
+    }
 
-        //roles
-        if ($request->has('roles')) {
-            $user->roles()->detach();
+    private function updateCompaniesToUser($companies, $userId) {
+        $companiesOld = CompanyUser::where('user_id','=',$userId)->get();
 
-            if ($request->get('roles')) {
-                $user->roles()->attach($request->get('roles'));
+        // Companies to delete
+        foreach ($companiesOld as $companyOld) {
+            $notFound = true;
+            foreach ($companies as $companyNew) {
+                if($companyOld->company_id == $companyNew) {
+                    $notFound = false;
+                    break;
+                }
+            }
+
+            if($notFound) {
+                $companyOld->delete();
             }
         }
 
-        return redirect()->intended(route('admin.users'));
+        foreach ($companies as $companyNew) {
+            $notFound = true;
+            foreach ($companiesOld as $companyOld) {
+                if($companyOld->company_id == $companyNew) {
+                    $notFound = false;
+                    break;
+                }
+            }
+
+            if($notFound) {
+                $company = new CompanyUser();
+                $company->company_id = $companyNew;
+                $company->user_id = $userId;
+                $company->save();
+            }
+        }
     }
 
     /**
@@ -104,9 +162,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->first();
-        if($companyUser != null) {
-            return view('admin.users.show', ['user' => $user, 'company' => $companyUser->company]);
+        $companiesUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->get();
+        if($companiesUser != null) {
+            return view('admin.users.show', ['user' => $user, 'companiesUser' => $companiesUser]);
         }
         return view('admin.users.show', ['user' => $user]);
     }
@@ -119,7 +177,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->first();
+        $companyUser = CompanyUser::where('user_id','=',$user->id)->where('active','=','1')->get();
         if($companyUser != null) {
             return view('admin.users.edit', ['user' => $user, 'companyUser' => $companyUser , 'roles' => Role::get(), 'companies' => Company::orderby('name','asc')->get()]);
         }
@@ -140,6 +198,10 @@ class UserController extends Controller
             'email' => 'required|email|max:255',
             'active' => 'sometimes|boolean',
             'confirmed' => 'sometimes|boolean',
+            'roles.*' => [
+                'required',
+                Rule::notIn(['0']),
+            ]
         ]);
 
         $validator->sometimes('email', 'unique:users', function ($input) use ($user) {
@@ -152,18 +214,8 @@ class UserController extends Controller
 
         if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
 
-        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
-            $validator = Validator::make($request->all(), [
-                'companies.*' => [
-                    'required',
-                    Rule::notIn(['0']),
-                ],
-                'roles' => ['required']
-            ]);
-            if ($validator->fails()) return redirect()->back()->withErrors($validator->errors());
-        }
-
         $user->name = $request->get('name');
+        $user->last_name = $request->get('last_name');
         $user->email = $request->get('email');
 
         if ($request->has('password')) {
@@ -175,7 +227,44 @@ class UserController extends Controller
 
         $user->save();
 
-        if($request->has('belong_company') && $request->get('belong_company') == 'on') {
+        $user->roles()->detach();
+        $user->roles()->attach($request->get('roles'));
+
+        $rol = Role::find($request->get('roles')[0]);
+
+        $validatorCompanies = Validator::make($request->all(), [
+            'companies.*' => [
+                'required',
+                Rule::notIn(['0']),
+            ]
+        ]);
+
+        switch ($rol->name) {
+            case 'system_admin' :
+                //$user->save();
+                break;
+            case 'community_manager' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                //$user->save();
+                $this->updateCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            case 'company_admin' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                //$user->save();
+                $this->updateCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            case 'company_user' :
+                if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
+                //$user->save();
+                $this->updateCompaniesToUser($request->get('companies'), $user->id);
+                break;
+            default:
+                break;
+        }
+
+
+
+        /*if($request->has('belong_company') && $request->get('belong_company') == 'on') {
             $companyId = $request->get('companies')[0];
 
             $companyUsers = CompanyUser::where('company_id','=',$companyId)->where('user_id','=',$user->id)->first();
@@ -202,7 +291,7 @@ class UserController extends Controller
             if ($request->get('roles')) {
                 $user->roles()->attach($request->get('roles'));
             }
-        }
+        }*/
 
         return redirect()->intended(route('admin.users'));
     }
@@ -218,9 +307,10 @@ class UserController extends Controller
         $user = User::find($id);
 
         if($user != null) {
-            $companiesRelations = CompanyUser::where('user_id','=',$id)->first();
+            $companiesRelations = CompanyUser::where('user_id','=',$id)->get();
             if($companiesRelations != null) {
-                $companiesRelations->delete();
+                foreach ($companiesRelations as $companyRelation)
+                    $companyRelation->delete();
             }
             $user->delete();
         }
