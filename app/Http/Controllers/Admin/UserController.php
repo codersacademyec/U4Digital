@@ -20,7 +20,34 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.users.index', ['users' => User::with('roles')->sortable(['email' => 'asc'])->paginate()]);
+        $users = null;
+
+        if(auth()->user()->hasRole('system_admin')) {
+            $users = User::with('roles')->sortable(['email' => 'asc'])->paginate();
+        }
+        else if(auth()->user()->hasRole('company_admin')) {
+            $companyUser = CompanyUser::where('user_id','=',auth()->user()->id)->first();
+            $usersCompany = CompanyUser::where('company_id','=',$companyUser->company_id)->get();
+            $usersId = array();
+            foreach ($usersCompany as $userCompany) {
+                $user = User::where('id', $userCompany->user_id)->with('roles')->first();
+                if($user->roles->pluck('name')[0] == 'company_user') {
+                    array_push($usersId,$userCompany->user_id);
+                }
+            }
+            $users = User::whereIn('id', $usersId)->with('roles')->sortable(['email' => 'asc'])->paginate();
+        }
+        else {
+            $companyUser = CompanyUser::where('user_id','=',auth()->user()->id)->first();
+            $usersCompany = CompanyUser::where('company_id','=',$companyUser->company_id)->get();
+            $usersId = array();
+            foreach ($usersCompany as $userCompany) {
+                array_push($usersId,$userCompany->user_id);
+            }
+            $users = User::whereIn('id', $usersId)->with('roles')->sortable(['email' => 'asc'])->paginate();
+        }
+        //$users = User::with('roles')->sortable(['email' => 'asc'])->paginate();
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
@@ -93,7 +120,7 @@ class UserController extends Controller
             case 'company_user' :
                 if ($validatorCompanies->fails()) return redirect()->back()->withErrors($validatorCompanies->errors());
                 $user->save();
-                $this->setCompaniesToUser($request->get('companies'), $user->id);
+                $this->setCurrentCompanyToUser($user->id);
                 break;
             default:
                 break;
@@ -105,6 +132,16 @@ class UserController extends Controller
         $user->roles()->attach($request->get('roles'));
 
         return redirect()->intended(route('admin.users'));
+    }
+
+    private function setCurrentCompanyToUser($userId) {
+        $userCompany = CompanyUser::where('user_id','=',auth()->user()->id)->first();
+        $companyUsers = new CompanyUser();
+        $companyUsers->company_id = $userCompany->company_id;
+        $companyUsers->user_id = $userId;
+        $companyUsers->active = true;
+        $companyUsers->save();
+
     }
 
     private function setCompaniesToUser($companies, $userId) {

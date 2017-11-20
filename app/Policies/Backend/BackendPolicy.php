@@ -29,6 +29,6 @@ class BackendPolicy
          * Add roles, who can view backend
          * Administrator fill as example
          */
-        return $user->hasRoles(['system_admin']);
+        return $user->hasRoles(['system_admin', 'community_manager', 'company_admin']);
     }
 }

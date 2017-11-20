@@ -107,6 +107,8 @@
                             @foreach($roles as $role)
                                 @if(auth()->user()->hasRole('system_admin') && $role->name != 'company_user')
                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @elseif(auth()->user()->hasRole('company_admin') && $role->name == 'company_user')
+                                    <option value="{{ $role->id }}" selected>{{ $role->name }}</option>
                                 @endif
                             @endforeach
                         </select>

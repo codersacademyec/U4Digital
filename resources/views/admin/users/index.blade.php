@@ -50,12 +50,14 @@
                         <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.show') }}">
                             <i class="fa fa-eye"></i>
                         </a>
+                        @if(!auth()->user()->hasRole('community_manager'))
                         <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.edit') }}">
                             <i class="fa fa-pencil"></i>
                         </a>
                         <a class="btn btn-xs btn-danger" data-user_id="{{ $user->id }}" name="btnUserDelete"  data-user_name="{{ $user->name }}" type="button" data-placement="top" data-title="{{ __('views.admin.users.index.edit') }}">
                             <i class="fa fa-trash"></i>
                         </a>
+                        @endif
                         {{--@if(!$user->hasRole('administrator'))--}}
                             {{--<button class="btn btn-xs btn-danger user_destroy"--}}
                                     {{--data-url="{{ route('admin.users.destroy', [$user->id]) }}" data-toggle="tooltip" data-placement="top" data-title="{{ __('views.admin.users.index.delete') }}">--}}

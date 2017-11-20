@@ -146,7 +146,11 @@
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         <select id="roles" name="roles[]" class="select2" style="width: 100%" autocomplete="off">
                             @foreach($roles as $role)
-                                <option @if($user->roles->find($role->id)) selected="selected" @endif value="{{ $role->id }}">{{ $role->name }}</option>
+                                @if(auth()->user()->hasRole('system_admin') && $role->name != 'company_user')
+                                    <option @if($user->roles->find($role->id)) selected="selected" @endif value="{{ $role->id }}">{{ $role->name }}</option>
+                                @elseif(auth()->user()->hasRole('company_admin') && $role->name == 'company_user')
+                                    <option @if($user->roles->find($role->id)) selected="selected" @endif value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endif
                             @endforeach
                         </select>
                         @if($errors->has('roles.0'))
@@ -172,7 +176,7 @@
                     </div>
                 </div>-->
 
-                <div class="form-group {{!$errors->has('companies.0')? isset($companyUser)? '':'hidden' :''}}" id="divCompanies">
+                <div class="form-group {{!$errors->has('companies.0')? isset($companyUser)? (auth()->user()->hasRole('company_admin')? 'hidden':''):'hidden' :''}}" id="divCompanies">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="companies">
                         {{ __('views.admin.users.create.companies') }}
                     </label>

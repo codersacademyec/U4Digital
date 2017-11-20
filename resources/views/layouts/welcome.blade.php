@@ -90,7 +90,7 @@
                             @endif
                             <a href="{{ url('/login') }}">{{ __('views.welcome.login') }}</a>
                         @else
-                            @if(auth()->user()->hasRole('system_admin'))
+                            @if(auth()->user()->hasRole('system_admin') || auth()->user()->hasRole('company_admin') || auth()->user()->hasRole('community_manager') )
                                 <a href="{{ url('/admin') }}">{{ __('views.welcome.admin') }}</a>
                             @endif
                             <a href="{{ url('/shopping') }}">Shopping</a>
