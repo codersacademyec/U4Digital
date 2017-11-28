@@ -6,6 +6,7 @@ var pathsToClean = [
     'public/assets/app/js',
     'public/assets/app/css',
     'public/assets/admin/js',
+    'public/assets/diary',
     'public/assets/admin/css',
     'public/assets/auth/css',
 ];
@@ -152,6 +153,22 @@ mix.styles([
     'resources/assets/admin/css/dashboard.css',
 ], 'public/assets/admin/css/dashboard.css').version();
 
+// Diary
+
+mix.scripts([
+    'node_modules/moment/min/moment-with-locales.min.js',
+    'node_modules/fullcalendar/dist/fullcalendar.js',
+    'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
+    'node_modules/select2/dist/js/select2.full.js',
+    'resources/assets/diary/diary.js'
+], 'public/assets/diary/diary.js').version();
+
+mix.styles([
+    'node_modules/fullcalendar/dist/fullcalendar.css',
+    'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
+    'node_modules/select2/dist/css/select2.css',
+    //'node_modules/fullcalendar/dist/fullcalendar.print.css',
+], 'public/assets/diary/diary.css').version();
 
 /*
  |--------------------------------------------------------------------------

@@ -84,6 +84,7 @@ Route::get('/', 'HomeController@index');
 */
 
 Route::get('shopping', 'ShoppingController@index')->name('store.shopping');
+Route::get('diary', 'DiaryController@index')->name('diary');
 
 /**
  * Membership

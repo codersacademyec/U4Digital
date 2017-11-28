@@ -38,6 +38,12 @@
                             Shopping
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('diary') }}">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            Diary
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="menu_section">
