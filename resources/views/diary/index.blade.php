@@ -98,9 +98,10 @@
                     @if(auth()->user()->hasRole('community_manager'))
                         <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAddEvent" >Add</button>
                         <button type="button" class="btn btn-primary hidden" data-dismiss="modal" id="btnUpdateEvent" >Update</button>
+                        <button type="button" class="btn btn-danger hidden" data-dismiss="modal" id="btnDeleteEvent" >Delete</button>
                     @elseif(auth()->user()->hasRole('company_admin'))
                         <button type="button" class="btn btn-success pull-left" data-dismiss="modal" id="btnApprovePost"><span class="fa fa-check"></span> Approve</button>
-                        <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="btnUnApprovePost"><span class="fa fa-close"></span> Un Approve</button>
+                        <button type="button" class="btn btn-warning pull-left" data-dismiss="modal" id="btnUnApprovePost"><span class="fa fa-close"></span> Un Approve</button>
                     @endif
                 </div>
             </div>

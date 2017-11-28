@@ -10,6 +10,7 @@
 
     var modal_btn_add_event = 'btnAddEvent';
     var modal_btn_update_event = 'btnUpdateEvent';
+    var modal_btn_delete_event = 'btnDeleteEvent';
     var modal_label_title = 'eventModalLabel';
 
     var event_details = null;
@@ -84,11 +85,14 @@
             updateEvent(event, event_details);
         });
 
+        $('#'+modal_btn_delete_event).click(function () {
+            deleteEvent(event_details);
+        });
+
         $('#'+event_modal_id).on('hide.bs.modal', function () {
             clearModal();
         });
 
-        console.log($('#'+event_modal_id).attr('data-enable_update'));
         var enableComponents = $('#'+event_modal_id).attr('data-enable_update') == ' true ';
         enableModalComponents(enableComponents);
     }
@@ -114,11 +118,13 @@
             $('#'+modal_label_title).html('Update Post');
             $('#'+modal_btn_add_event).addClass('hidden');
             $('#'+modal_btn_update_event).removeClass('hidden');
+            $('#'+modal_btn_delete_event).removeClass('hidden');
         }
         else {
             $('#'+modal_label_title).html('Add Post');
             $('#'+modal_btn_add_event).removeClass('hidden');
             $('#'+modal_btn_update_event).addClass('hidden');
+            $('#'+modal_btn_delete_event).addClass('hidden');
         }
         $('#'+event_modal_id).modal('show');
     }
@@ -171,6 +177,10 @@
         originEvent.end = newEvent.end;
         originEvent.description = newEvent.description;
         $('#'+calendar_id).fullCalendar('updateEvent', originEvent);
+    }
+
+    function deleteEvent(event) {
+        $('#'+calendar_id).fullCalendar('removeEvents', event._id);
     }
 
     $(document).ready(function() {
