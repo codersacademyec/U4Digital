@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('diary', 'DiaryController@store');
+Route::post('diary/{id}', 'DiaryController@update');
+Route::get('diary/{id}', 'DiaryController@getEventsByCompany');
+Route::get('diary/picture/events/{filemedia}', 'DiaryController@getFileMedia');

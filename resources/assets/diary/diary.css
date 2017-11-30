@@ -1,0 +1,24 @@
+.custom-input-file {
+    display: block;
+    width: 100%;
+    text-align: center;
+    border: 1px dotted #cccccc;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.custom-input-file:hover {
+    background-color: white;
+    opacity: 0.5;
+}
+
+.custom-input-file > input[type=file] {
+    display: none;
+}
+
+.preview {
+    width: 250px;
+    height: 250px;
+}

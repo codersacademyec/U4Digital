@@ -160,6 +160,8 @@ mix.scripts([
     'node_modules/fullcalendar/dist/fullcalendar.js',
     'node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js',
     'node_modules/select2/dist/js/select2.full.js',
+    'node_modules/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
+    'node_modules/blueimp-file-upload/js/jquery.fileupload.js',
     'resources/assets/diary/diary.js'
 ], 'public/assets/diary/diary.js').version();
 
@@ -167,6 +169,7 @@ mix.styles([
     'node_modules/fullcalendar/dist/fullcalendar.css',
     'node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css',
     'node_modules/select2/dist/css/select2.css',
+    'resources/assets/diary/diary.css'
     //'node_modules/fullcalendar/dist/fullcalendar.print.css',
 ], 'public/assets/diary/diary.css').version();
 
