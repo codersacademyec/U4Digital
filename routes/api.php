@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('diary', 'DiaryController@store');
 Route::post('diary/{id}', 'DiaryController@update');
+Route::post('diary/approve/{id}', 'DiaryController@approveEvent');
 Route::get('diary/{id}', 'DiaryController@getEventsByCompany');
 Route::get('diary/picture/events/{filemedia}', 'DiaryController@getFileMedia');

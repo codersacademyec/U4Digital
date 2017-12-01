@@ -48,8 +48,8 @@
                                 Title
                                 <span class="required">*</span>
                             </label>
-                            <div class="col-md-9 col-sm-9 col-xs-12">
-                                <input type='text' id="eventTitle" class="form-control input-group" />
+                            <div class="col-md-9 col-sm-9 col-xs-12 input-group-sm">
+                                <input type='text' id="eventTitle" class="form-control input-group " />
                             </div>
                         </div>
                         <div class="form-group">
@@ -140,9 +140,10 @@
                         <button type="button" class="btn btn-primary" id="btnAddEvent" >Add</button>
                         <button type="button" class="btn btn-primary hidden" id="btnUpdateEvent" >Update</button>
                         <button type="button" class="btn btn-danger hidden" data-dismiss="modal" id="btnDeleteEvent" >Delete</button>
-                    @elseif(auth()->user()->hasRole('company_admin') || auth()->user()->hasRole('system_admin'))
-                        <button type="button" class="btn btn-success pull-left" data-dismiss="modal" id="btnApprovePost"><span class="fa fa-check"></span> Approve</button>
-                        <button type="button" class="btn btn-warning pull-left" data-dismiss="modal" id="btnUnApprovePost"><span class="fa fa-close"></span> Un Approve</button>
+                    @endif
+                    @if(auth()->user()->hasRole('company_admin') || auth()->user()->hasRole('system_admin'))
+                        <button type="button" class="btn btn-success pull-left" id="btnApprovePost"><span class="fa fa-check"></span> Approve</button>
+                        <button type="button" class="btn btn-danger pull-left" id="btnUnApprovePost"><span class="fa fa-close"></span> Un Approve</button>
                     @endif
                 </div>
             </div>

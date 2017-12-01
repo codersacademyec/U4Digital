@@ -18,6 +18,8 @@
     var modal_btn_add_event = 'btnAddEvent';
     var modal_btn_update_event = 'btnUpdateEvent';
     var modal_btn_delete_event = 'btnDeleteEvent';
+    var modal_btn_approve_post = 'btnApprovePost';
+    var modal_btn_unapprove_post = 'btnUnApprovePost';
     var modal_label_title = 'eventModalLabel';
 
     var modal_file_upload_image = 'fileImage';
@@ -79,11 +81,18 @@
         $('#'+modal_btn_update_event).click(function() {
             var event = loadEvent();
             editEvent(event);
-            //updateEvent(event, event_details);
         });
 
         $('#'+modal_btn_delete_event).click(function () {
             deleteEvent(event_details);
+        });
+
+        $('#'+modal_btn_approve_post).click(function () {
+            approvedEvent(event_details.calendar_event_id, true);
+        });
+
+        $('#'+modal_btn_unapprove_post).click(function () {
+            approvedEvent(event_details.calendar_event_id, false);
         });
     }
 
@@ -138,7 +147,6 @@
     }
 
     function setObjectUrlPreview(idElement, urlMedia) {
-        //console.log(apiServer+'diary/picture/'+urlMedia);
         document.getElementById(idElement).src = apiServer+'diary/picture/'+urlMedia;
     }
     
@@ -200,6 +208,7 @@
             $('#'+modal_btn_delete_event).removeClass('hidden');
             //$('#'+event_modal_message).removeClass('hidden');
             showFileComponents(event_details.typePostName);
+            showApprovedStatus(event_details.approved, event_details.unapproved);
 
             if(event_details.typePost == 1) {
                 $('#'+event_description_id).val(event_details.text_post);
@@ -210,6 +219,15 @@
             else if(event_details.typePost == 3) {
                 setObjectUrlPreview('idVideoPreview', event_details.path_media);
             }
+
+            if(event_details.approved == false && event_details.unapproved == false) {
+                $('#'+modal_btn_approve_post).prop('disabled',false);
+                $('#'+modal_btn_unapprove_post).prop('disabled',false);
+            }
+            else {
+                $('#'+modal_btn_approve_post).prop('disabled',true);
+                $('#'+modal_btn_unapprove_post).prop('disabled',true);
+            }
         }
         else {
             $('#'+modal_label_title).html('Add Post');
@@ -218,6 +236,8 @@
             $('#'+modal_btn_delete_event).addClass('hidden');
             $('#'+event_modal_message).addClass('hidden');
             $('#'+event_type_post_id).val('');
+            $('#'+modal_btn_approve_post).prop('disabled',true);
+            $('#'+modal_btn_unapprove_post).prop('disabled',true);
         }
         $('#'+event_modal_id).modal('show');
     }
@@ -236,6 +256,8 @@
         $('#'+event_row_type_image).addClass('hidden');
         $('#'+event_row_type_video).addClass('hidden');
         $('#'+event_row_type_text).addClass('hidden');
+        setObjectUrlPreview('idImagePreview', '');
+        setObjectUrlPreview('idVideoPreview', '');
         event_details = null;
     }
 
@@ -294,7 +316,8 @@
         originEvent.start = newEvent.start;
         originEvent.end = newEvent.end;
         originEvent.typePost = newEvent.typePost;
-        //$('#'+calendar_id).fullCalendar('updateEvent', originEvent);
+        originEvent.file = newEvent.file;
+        $('#'+calendar_id).fullCalendar('updateEvent', originEvent);
     }
 
     function deleteEvent(event) {
@@ -309,11 +332,26 @@
         $('#messageUpdate').removeClass('hidden').html(message);
     }
 
-    function showApprovedStatus(approvedDate) {
+    function showApprovedStatus(approved, unapproved) {
         $('#'+event_modal_message).removeClass('hidden');
+        $('#'+event_modal_message).removeClass('alert-info');
+        $('#'+event_modal_message).removeClass('alert-success');
+        $('#'+event_modal_message).removeClass('alert-danger');
 
-        if(approvedDate == null) {
-
+        if(!approved && !unapproved) {
+            // Show message info
+            $('#'+event_modal_message).addClass('alert-info');
+            $('#'+event_modal_message).html('Post waiting for decision.')
+        }
+        else if(approved) {
+            // Show message success
+            $('#'+event_modal_message).addClass('alert-success');
+            $('#'+event_modal_message).html('Post Approved.');
+        }
+        else if(unapproved) {
+            // Show message danger
+            $('#'+event_modal_message).addClass('alert-danger');
+            $('#'+event_modal_message).html('Post Unapproved.');
         }
     }
 
@@ -345,7 +383,8 @@
                 text_post : data[i].text_post,
                 typePost: data[i].type_post.id,
                 typePostName: data[i].type_post.name,
-                approved : data[i].approved != null
+                approved : data[i].approved != null,
+                unapproved : data[i].unapproved != null
             };
             addNewEvent(event);
         }
@@ -376,7 +415,20 @@
             },
             'json')
             .done(function (data) {
-                addNewEvent(event);
+                var eventNew = {
+                    calendar_event_id: data.id,
+                    title : data.title,
+                    start : data.start,
+                    end : data.end,
+                    path_media : data.path_media,
+                    text_post : data.text_post,
+                    typePost: data.type_post.id,
+                    typePostName: data.type_post.name,
+                    approved : data.approved != null,
+                    unapproved : data.unapproved != null
+                };
+                addNewEvent(eventNew);
+
                 closeModal();
             })
             .fail(function (data) {
@@ -416,6 +468,23 @@
             .fail(function (data) {
                 showErrorMessage(data.responseText);
             });
+    }
+
+    function approvedEvent(id, approved) {
+        var data = {
+            approved: approved
+        };
+
+        $.post(apiServer + 'diary/approve/'+id, data, function(data) {
+            showApprovedStatus(approved, !approved);
+            event_details.approved = approved;
+            event_details.unapproved = !approved;
+
+            $('#'+modal_btn_approve_post).prop('disabled',true);
+            $('#'+modal_btn_unapprove_post).prop('disabled',true);
+        }).fail(function (data) {
+            showErrorMessage(data.responseText);
+        })
     }
 
     $(document).ready(function() {

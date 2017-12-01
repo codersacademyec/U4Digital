@@ -61,6 +61,7 @@ class DiaryController extends Controller
         }
 
         $calendarEvent->save();
+        $calendarEvent->typePost;
 
         return $calendarEvent;
     }
@@ -78,6 +79,8 @@ class DiaryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $calendarEvent = CalendarEvent::find($id);
+
         $validator = Validator::make($request->all(), [
             'company_id' => 'required',
             'title' => 'required|max:255',
@@ -90,15 +93,14 @@ class DiaryController extends Controller
             return $input->typePost == 1;
         });
 
-        $validator->sometimes('file', 'required|file|max:10240', function ($input) {
-            return $input->typePost > 1;
+        $validator->sometimes('file', 'required|file|max:10240', function ($input) use ($calendarEvent) {
+            return $input->typePost > 1 && $input->typePost != $calendarEvent->post_types_id;
         });
 
         if($validator->fails()) {
             return response()->json($validator->messages()->first(), 422);
         }
 
-        $calendarEvent = CalendarEvent::find($id);
         $calendarEvent->company_id = $request->input('company_id');
         $calendarEvent->title = $request->input('title');
         $calendarEvent->start = $request->input('start');
@@ -110,12 +112,36 @@ class DiaryController extends Controller
             $calendarEvent->text_post = $request->input('text');
         }
 
-        if($request->has('file')) {
+        if($request->has('file') && $request->file('file') != null) {
             $calendarEvent->path_media = $this->saveImageProfile($request->file('file'), $calendarEvent->id);
         }
 
         $calendarEvent->save();
         
+        return $calendarEvent;
+    }
+
+    public function approveEvent(Request $request, $id)
+    {
+        $calendarEvent = CalendarEvent::find($id);
+
+        $validator = Validator::make($request->all(), [
+            'approved' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->messages()->first(), 422);
+        }
+
+        if($request->input('approved') == 'true') {
+            $calendarEvent->approved = date('Y-m-d');
+        }
+        else {
+            $calendarEvent->unapproved = date('Y-m-d');
+        }
+
+        $calendarEvent->save();
+
         return $calendarEvent;
     }
 
